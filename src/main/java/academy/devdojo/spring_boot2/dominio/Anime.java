@@ -9,5 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor // Gera o construtor sem argumentos
 @AllArgsConstructor // Gera o construtor com todos os argumentos
 public class Anime {
+    private Long id;
     private String name;
 }
