@@ -44,4 +44,10 @@ public class AnimeService {
     public void delete(Long id) {
         listAnimes.remove(findById(id));
     }
+
+    public void replace(Anime anime) {
+        delete(anime.getId());
+        listAnimes.add(anime);
+    }
+
 }
