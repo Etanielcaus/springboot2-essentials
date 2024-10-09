@@ -9,11 +9,12 @@ import org.springframework.web.server.ResponseStatusException;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AnimeService {
 
-    private List<Anime> listAnimes = new ArrayList<>(List.of(new Anime(1L, "DBZ"), new Anime(2L, "Naruto")));
+    private static List<Anime> listAnimes = new ArrayList<>(List.of(new Anime(1L, "DBZ"), new Anime(2L, "Naruto")));
 
     public List<Anime> listAll(){
         return listAnimes;
@@ -34,7 +35,8 @@ public class AnimeService {
     }
 
     public Anime save(Anime anime) {
-        listAnimes.add(anime); // Adiciona o novo anime à lista
-        return anime; // Retorna o anime recém-adicionado
+        anime.setId(ThreadLocalRandom.current().nextLong(3L, 1000L));
+        listAnimes.add(anime);
+        return anime;
     }
 }
