@@ -2,16 +2,14 @@ package academy.devdojo.spring_boot2.controller;
 
 import academy.devdojo.spring_boot2.dominio.Anime;
 import academy.devdojo.spring_boot2.request.AnimePutRequestBody;
-import academy.devdojo.spring_boot2.request.AnimeRequestBody;
+import academy.devdojo.spring_boot2.request.AnimePostRequestBody;
 import academy.devdojo.spring_boot2.service.AnimeService;
-import academy.devdojo.spring_boot2.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -37,8 +35,8 @@ public class AnimeController {
 
 
     @PostMapping
-    public ResponseEntity<Anime> save(@RequestBody AnimeRequestBody animeRequestBody){
-        return new ResponseEntity<>(animeService.save(animeRequestBody), HttpStatus.CREATED);
+    public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody){
+        return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
     }
 
 
