@@ -19,7 +19,6 @@ import java.util.List;
 @Log4j2
 public class AnimeController {
 
-//    @Autowired
    private final AnimeService animeService;
 
     @GetMapping()
