@@ -4,19 +4,23 @@ import academy.devdojo.spring_boot2.exception.BadRequestException;
 import academy.devdojo.spring_boot2.exception.BadRequestExceptionDetail;
 import academy.devdojo.spring_boot2.exception.ExceptionDetails;
 import academy.devdojo.spring_boot2.exception.ValidationExceptionDetails;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class HandlerBadRequestException {
+public class HandlerBadRequestException extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<BadRequestExceptionDetail> brd(BadRequestException brddd){
@@ -26,10 +30,9 @@ public class HandlerBadRequestException {
                 .details(brddd.getMessage())
                 .build(), HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationExceptionDetails> methodArgumentNotValidExceptionResponseEntity(
-            MethodArgumentNotValidException exception){
+@Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException exception, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
         String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(", "));
         String fieldsMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(", "));
@@ -41,5 +44,20 @@ public class HandlerBadRequestException {
                 .fields(fields)
                 .fieldsMessages(fieldsMessage)
                 .build(), HttpStatus.BAD_REQUEST);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+            Exception ex, @Nullable Object body, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        ExceptionDetails build = ExceptionDetails.builder()
+                .title(ex.getClass().getName())
+                .message(ex.getCause().getMessage())
+                .timeStamp(LocalDateTime.now())
+                .status(status.value())
+                .details(ex.getMessage())
+                .build();
+
+        return new ResponseEntity<>(build, headers, status);
     }
 }
