@@ -1,12 +1,9 @@
 package academy.devdojo.spring_boot2.client;
 
 import academy.devdojo.spring_boot2.dominio.Anime;
-import javassist.bytecode.analysis.Analyzer;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
@@ -26,5 +23,21 @@ public class SprinClient {
                 });
 
         log.info(exchange.getBody());
+
+//        Anime buildedAnime = Anime.builder().name("Kingon").build();
+//        Anime animeSaved = new RestTemplate().postForObject("http://localhost:8080/animes/", buildedAnime, Anime.class);
+//        log.info("anime saved {}", animeSaved);
+
+        Anime buildedNewAnime = Anime.builder().name("collen hoober").build();
+        ResponseEntity<Anime> exchange1 = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.POST, new HttpEntity<>(buildedNewAnime, httpHeaders()), Anime.class);
+        log.info("Anime saved using exchage {}", exchange1);
+
+    }
+
+    private static HttpHeaders httpHeaders(){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.getContentType();
+        return httpHeaders;
     }
 }
