@@ -33,6 +33,17 @@ public class SprinClient {
                 HttpMethod.POST, new HttpEntity<>(buildedNewAnime, httpHeaders()), Anime.class);
         log.info("Anime saved using exchage {}", exchange1);
 
+        Anime buildedNewAnimeUpdate = exchange1.getBody();
+        buildedNewAnimeUpdate.setName("Collen hooover ...");
+        ResponseEntity<Void> exchangeToUpdate = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.PUT, new HttpEntity<>(buildedNewAnimeUpdate, httpHeaders()), Void.class);
+
+        log.info(exchangeToUpdate);
+
+//        ResponseEntity<Void> exchange2 = new RestTemplate().exchange("http://localhost:8080/animes/{id}", HttpMethod.DELETE, null, Void.class,
+//                buildedNewAnimeUpdate.getId());
+//        log.info(exchange2);
+
     }
 
     private static HttpHeaders httpHeaders(){
