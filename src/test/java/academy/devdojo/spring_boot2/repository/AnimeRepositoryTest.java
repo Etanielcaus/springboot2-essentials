@@ -1,6 +1,7 @@
 package academy.devdojo.spring_boot2.repository;
 
 import academy.devdojo.spring_boot2.dominio.Anime;
+import academy.devdojo.spring_boot2.util.CreateAnime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,7 +23,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save Anime When Susceful")
     public void save_Anime_WhenSusceful(){
 
-        Anime animeToBeSave = createdAnime();
+        Anime animeToBeSave = CreateAnime.savedAnime();
 
         Anime savedAnime = this.animeRepository.save(animeToBeSave);
         Assertions.assertThat(savedAnime).isNotNull();
@@ -34,7 +35,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save and Update Anime When Susceful")
     public void save_Update_Anime_WhenSusceful(){
 
-        Anime animeToBeSave = createdAnime();
+        Anime animeToBeSave = CreateAnime.savedAnime();
         Anime savedAnime = this.animeRepository.save(animeToBeSave);
         
         savedAnime.setName("Naruto");
@@ -50,7 +51,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save and Remove Anime When Susceful")
     public void save_RemoveAnime_WhenSusceful(){
 
-        Anime animeToBeSave = createdAnime();
+        Anime animeToBeSave = CreateAnime.savedAnime();
         Anime savedAnime = this.animeRepository.save(animeToBeSave);
 
         this.animeRepository.delete(savedAnime);
@@ -64,7 +65,7 @@ class AnimeRepositoryTest {
     @Test
     @DisplayName("Find Anime With name, return a animes list when succesful")
     public void findAnimeWithName(){
-        Anime animeToSearch = createdAnime();
+        Anime animeToSearch = CreateAnime.savedAnime();
         Anime savedAnimeToSearch = this.animeRepository.save(animeToSearch);
         List<Anime> byName = this.animeRepository.findByName(animeToSearch.getName());
 
@@ -90,9 +91,5 @@ class AnimeRepositoryTest {
                 .isThrownBy(() -> this.animeRepository.save(anime));
     }
 
-    private Anime createdAnime(){
-        return Anime.builder()
-                .name("Hajime")
-                .build();
-    }
+
 }
