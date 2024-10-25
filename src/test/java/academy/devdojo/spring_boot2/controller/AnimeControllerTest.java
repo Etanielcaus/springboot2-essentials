@@ -1,6 +1,7 @@
 package academy.devdojo.spring_boot2.controller;
 
 import academy.devdojo.spring_boot2.dominio.Anime;
+import academy.devdojo.spring_boot2.request.AnimePostRequestBody;
 import academy.devdojo.spring_boot2.service.AnimeService;
 import academy.devdojo.spring_boot2.util.CreateAnime;
 import org.assertj.core.api.Assertions;
@@ -15,11 +16,13 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(SpringExtension.class)
 class AnimeControllerTest {
@@ -33,7 +36,7 @@ class AnimeControllerTest {
     @BeforeEach
     void setUp(){
         PageImpl<Anime> animePage = new PageImpl<>(List.of(CreateAnime.createdNormalAnime()));
-        BDDMockito.when(animeService.listAll(ArgumentMatchers.any()))
+        BDDMockito.when(animeService.listAll(any()))
                 .thenReturn(animePage);
     }
 
@@ -48,6 +51,7 @@ class AnimeControllerTest {
         Assertions.assertThat(animePage).hasSize(1);
         Assertions.assertThat(animePage.toList().get(0).getName()).isEqualTo(nameExcpected);
     }
+
 
     @Test
     @DisplayName("list Return a list of Animes Empty")
