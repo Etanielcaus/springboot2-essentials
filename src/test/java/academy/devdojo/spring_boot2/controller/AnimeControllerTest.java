@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class AnimeControllerTest {
@@ -36,9 +37,20 @@ class AnimeControllerTest {
     @BeforeEach
     void setUp(){
         PageImpl<Anime> animePage = new PageImpl<>(List.of(CreateAnime.createdNormalAnime()));
-        BDDMockito.when(animeService.listAll(any()))
+        when(animeService.listAll(any()))
                 .thenReturn(animePage);
+//            List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
+//            BDDMockito.when(animeService.listAllNonPageable())
+//                    .thenReturn(animeList);
     }
+
+//    @BeforeEach
+//    void setUp() {
+//        String nameExpected = CreateAnime.createdNormalAnime().getName();
+//        List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
+//        BDDMockito.when(animeService.findByName(nameExpected))
+//                .thenReturn(animeList);
+//    }
 
     @Test
     @DisplayName("List return list of animes inside page object when successful")
@@ -50,6 +62,21 @@ class AnimeControllerTest {
         Assertions.assertThat(animePage).isNotEmpty();
         Assertions.assertThat(animePage).hasSize(1);
         Assertions.assertThat(animePage.toList().get(0).getName()).isEqualTo(nameExcpected);
+    }
+
+    @Test
+    @DisplayName("Find by name")
+    void findBYName_ReturnListWhenSuccessfull(){
+        Anime anime = CreateAnime.createdNormalAnime();
+        String animeString = CreateAnime.createdNormalAnime().getName();
+
+        List<Anime> animeList = List.of(anime);
+
+        when(animeService.findByName(animeString)).thenReturn(animeList);
+        List<Anime> body = animeController.findByName(animeString).getBody();
+
+        Assertions.assertThat(body).isNotEmpty();
+        Assertions.assertThat(body).extracting(Anime::getName).contains(animeString);
     }
 
 
