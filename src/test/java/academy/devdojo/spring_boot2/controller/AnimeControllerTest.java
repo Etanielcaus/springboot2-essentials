@@ -39,6 +39,7 @@ class AnimeControllerTest {
         PageImpl<Anime> animePage = new PageImpl<>(List.of(CreateAnime.createdNormalAnime()));
         when(animeService.listAll(any()))
                 .thenReturn(animePage);
+
 //            List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
 //            BDDMockito.when(animeService.listAllNonPageable())
 //                    .thenReturn(animeList);
@@ -51,6 +52,8 @@ class AnimeControllerTest {
 //        BDDMockito.when(animeService.findByName(nameExpected))
 //                .thenReturn(animeList);
 //    }
+
+
 
     @Test
     @DisplayName("List return list of animes inside page object when successful")
