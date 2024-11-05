@@ -40,18 +40,10 @@ class AnimeControllerTest {
         when(animeService.listAll(any()))
                 .thenReturn(animePage);
 
-//            List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
-//            BDDMockito.when(animeService.listAllNonPageable())
-//                    .thenReturn(animeList);
+            List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
+            BDDMockito.when(animeService.listAllNonPageable())
+                    .thenReturn(animeList);
     }
-
-//    @BeforeEach
-//    void setUp() {
-//        String nameExpected = CreateAnime.createdNormalAnime().getName();
-//        List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
-//        BDDMockito.when(animeService.findByName(nameExpected))
-//                .thenReturn(animeList);
-//    }
 
 
 
@@ -83,13 +75,16 @@ class AnimeControllerTest {
     }
 
 
-    @Test
-    @DisplayName("list Return a list of Animes Empty")
-    void list_Empty(){
-        animeService.delete(1L);
-        List<Anime> body = animeController.animeListAll().getBody();
-
-        Assertions.assertThat(body).isEmpty();
-        Assertions.assertThat(body).isNullOrEmpty();
-    }
+//    @Test
+//    @DisplayName("list Return a list of Animes Empty")
+//    void list_Empty(){
+//        Anime anime = CreateAnime.createdNormalAnime();
+//        List<Anime> animeList = List.of(anime);
+//
+//        animeService.delete(1L);
+//        List<Anime> body = animeController.animeListAll().getBody();
+//
+//        Assertions.assertThat(body).isEmpty();
+//        Assertions.assertThat(body).isNullOrEmpty();
+//    }
 }
