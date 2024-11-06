@@ -19,6 +19,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,9 +41,11 @@ class AnimeControllerTest {
         when(animeService.listAll(any()))
                 .thenReturn(animePage);
 
-            List<Anime> animeList = List.of(CreateAnime.createdNormalAnime());
-            BDDMockito.when(animeService.listAllNonPageable())
-                    .thenReturn(animeList);
+        when(animeService.listAllNonPageable()).thenReturn(List.of(CreateAnime.createdNormalAnime()));
+
+        when(animeService.findByIdOrThrowBadRequest(ArgumentMatchers.anyLong()))
+                .thenReturn(CreateAnime.createdNormalAnime());
+
     }
 
 
@@ -60,6 +63,18 @@ class AnimeControllerTest {
     }
 
     @Test
+    @DisplayName("Return a list of Anime when succesfuly")
+    void list_ReturnListOfAnimes_WhenSuccessfull(){
+        String nameExcpected = CreateAnime.createdNormalAnime().getName();
+        List<Anime> animeList = animeController.animeListAll().getBody();
+
+        Assertions.assertThat(animeList).isNotNull();
+        Assertions.assertThat(animeList).isNotEmpty();
+        Assertions.assertThat(animeList).hasSize(1);
+        Assertions.assertThat(animeList.get(0).getName()).isEqualTo(nameExcpected);
+    }
+
+    @Test
     @DisplayName("Find by name")
     void findBYName_ReturnListWhenSuccessfull(){
         Anime anime = CreateAnime.createdNormalAnime();
@@ -74,17 +89,17 @@ class AnimeControllerTest {
         Assertions.assertThat(body).extracting(Anime::getName).contains(animeString);
     }
 
+    @Test
+    @DisplayName("Find By Id if sucessfuly")
+    void findById_Return_Anime_WhenSuccessfull(){
+        Anime anime = CreateAnime.createdNormalAnime();
 
-//    @Test
-//    @DisplayName("list Return a list of Animes Empty")
-//    void list_Empty(){
-//        Anime anime = CreateAnime.createdNormalAnime();
-//        List<Anime> animeList = List.of(anime);
-//
-//        animeService.delete(1L);
-//        List<Anime> body = animeController.animeListAll().getBody();
-//
-//        Assertions.assertThat(body).isEmpty();
-//        Assertions.assertThat(body).isNullOrEmpty();
-//    }
+        Anime animeTest = animeController.findById(anime.getId()).getBody();
+
+        Assertions.assertThat(animeTest).isNotNull();
+        Assertions.assertThat(animeTest.getName()).isNotNull().isEqualTo(anime.getName());
+    }
+
+
+
 }
